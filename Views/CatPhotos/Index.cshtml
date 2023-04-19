@@ -1,0 +1,52 @@
+﻿@model IEnumerable<CATSTAGRAM.Models.CatPhoto>
+
+<h1>Cat Photos</h1>
+
+<p>
+    <a asp-action="Create">Upload new photo</a>
+</p>
+
+@if (Model != null && Model.Any())
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.First().ImageTitle)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.First().AuthorName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.First().DateAdded)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ImageTitle)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.AuthorName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DateAdded)
+                    </td>
+                    <td>
+                        <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No cat photos found.</p>
+}
