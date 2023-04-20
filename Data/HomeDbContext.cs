@@ -15,5 +15,10 @@ namespace CATSTAGRAM.Data
         }
 
         public DbSet<CATSTAGRAM.Models.CatPhoto> CatPhoto { get; set; } = default!;
+
+        public static implicit operator HomeDbContext(ApplicationDbContext v)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
