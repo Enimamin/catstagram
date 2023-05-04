@@ -10,16 +10,13 @@ namespace CATSTAGRAM.Models
     {
         public int Id { get; set; }
 
-        [Required]
         [MaxLength(100)]
         public string AuthorName { get; set; }
 
-        [Required]
         [EmailAddress]
         public string AuthorEmail { get; set; }
 
         public string ImageTitle { get; set; }
-
 
         public string ImageDescription { get; set; }
 
@@ -33,11 +30,12 @@ namespace CATSTAGRAM.Models
         [Display(Name = "Image")]
         public byte[] ImageData { get; set; }
 
-
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime DateAdded { get; set; } = DateTime.Now;
 
         public string Comments { get; set; }
+
+        public string ImageUrl { get; set; }
 
         public void LoadImageData()
         {

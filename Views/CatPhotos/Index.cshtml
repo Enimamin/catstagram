@@ -1,7 +1,17 @@
 ﻿@model IEnumerable<CATSTAGRAM.Models.CatPhoto>
 
+@{
+    ViewData["Title"] = "Cat Photos";
+}
 <h1>Cat Photos</h1>
-
+<form method="get" action="@Url.Action("Index")">
+    <div class="form-group">
+        <label for="search">Search:</label>
+        <input type="text" class="form-control" id="search" name="search" value="@ViewBag.Search">
+    </div>
+    <button type="submit" class="btn btn-primary">Search</button>
+    <a asp-action="Index" class="btn btn-secondary">Clear</a>
+</form>
 <p>
     <a asp-action="Create">Upload new photo</a>
 </p>
@@ -26,6 +36,13 @@
         <tbody>
             @foreach (var item in Model)
             {
+                if (ViewBag.Search != null &&
+                !item.ImageTitle.Contains(ViewBag.Search, StringComparison.OrdinalIgnoreCase) &&
+                !item.ImageDescription.Contains(ViewBag.Search, StringComparison.OrdinalIgnoreCase) &&
+                !item.Comments.Contains(ViewBag.Search, StringComparison.OrdinalIgnoreCase))
+                {
+                    continue;
+                }
                 <tr>
                     <td>
                         @Html.DisplayFor(modelItem => item.ImageTitle)

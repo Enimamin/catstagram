@@ -9,6 +9,9 @@ using Microsoft.EntityFrameworkCore;
 using CATSTAGRAM.Data;
 using CATSTAGRAM.Models;
 using Microsoft.AspNetCore.Hosting;
+using System.IO;
+using Microsoft.AspNetCore.Hosting;
+
 
 namespace CATSTAGRAM.Controllers
 {
@@ -61,22 +64,44 @@ namespace CATSTAGRAM.Controllers
         [ValidateAntiForgeryToken]
         [HttpPost]
 
-        public async Task<IActionResult> Create([Bind("AuthorName,AuthorEmail,ImageTitle,ImageDescription,ImageFile,DateAdded,Comments")] CatPhoto catPhoto)
+        // POST: CatPhotos/Create
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        public async Task<IActionResult> Create([Bind("CatId,Name,Description,ImageUrl,Image")] CatPhoto cat)
         {
+
             if (ModelState.IsValid)
             {
-                using (var memoryStream = new MemoryStream())
+                // Check if an image was uploaded
+                if (cat.ImageFile != null)
                 {
-                    await catPhoto.ImageFile.CopyToAsync(memoryStream);
-                    catPhoto.ImageData = memoryStream.ToArray();
+                    // Get the filename of the uploaded image
+                    string fileName = Path.GetFileName(cat.ImageFile.FileName);
+                    // Set the path where the image will be saved
+                    string filePath = Path.Combine(_webHostEnvironment.WebRootPath, "images", fileName);
+
+                    // Copy the image to the file path
+                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await cat.ImageFile.CopyToAsync(stream);
+                    }
+
+                    // Set the ImageUrl property of the cat object to the path where the image was saved
+                    cat.ImageUrl = $"/images/{fileName}";
                 }
 
-                _context.Add(catPhoto);
+                _context.Add(cat);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(catPhoto);
+            return View(cat);
         }
+
+
+
+
+
 
 
 

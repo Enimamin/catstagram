@@ -2,7 +2,8 @@
 
 <h2>Create a new Cat Photo</h2>
 
-<form asp-action="Create" enctype="multipart/form-data">
+<form asp-controller="CatPhotos" asp-action="Create" method="post" enctype="multipart/form-data">
+    @Html.AntiForgeryToken()
     <div class="form-group">
         <label asp-for="AuthorName" class="control-label"></label>
         <input asp-for="AuthorName" class="form-control" />
@@ -25,13 +26,21 @@
     </div>
     <div class="form-group">
         <label asp-for="ImageFile" class="control-label"></label>
-        <input asp-for="ImageFile" type="file" class="form-control-file" />
+        <input asp-for="ImageFile" type="file" class="form-control-file" onchange="document.getElementById('previewImage').src = window.URL.createObjectURL(this.files[0])" />
         <span asp-validation-for="ImageFile" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <img id="previewImage" alt="Preview Image" class="img-thumbnail" style="max-width:200px; max-height:200px;" />
     </div>
     <div class="form-group">
         <label asp-for="Comments" class="control-label"></label>
         <textarea asp-for="Comments" class="form-control"></textarea>
         <span asp-validation-for="Comments" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="DateAdded" class="control-label"></label>
+        <input asp-for="DateAdded" class="form-control" />
+        <span asp-validation-for="DateAdded" class="text-danger"></span>
     </div>
     <div class="form-group">
         <input type="submit" value="Create" class="btn btn-primary" />
